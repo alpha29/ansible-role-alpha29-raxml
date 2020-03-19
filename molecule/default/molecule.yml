@@ -1,12 +1,25 @@
 ---
 dependency:
   name: galaxy
+  options:
+    ignore-certs: True
+    ignore-errors: True
+    role-file: requirements.yml
 driver:
   name: docker
 platforms:
   - name: instance
-    image: docker.io/pycontribs/centos:7
+    image: "geerlingguy/docker-${MOLECULE_DISTRO:-centos7}-ansible:latest"
     pre_build_image: true
+    # cbrown 20200318 - Originally observed this issue in ansible-role-alpha29-ml.  Solution copy-pasted below.
+    # cbrown 20200217 - CAR-72:  This was a monumental headache.
+    # geerlingguy.docker downloads docker-compose from (e.g.):
+    #   https://github.com/docker/compose/releases/download/1.24.1/docker-compose-Linux-x86_64
+    # That gives an HTTP 302 redirect, and - for some reason - the Docker container can't resolve the resulting DNS name.
+    # This doesn't just break in Ansible - 'wget' also can't resolve the redirect.
+    # I don't expect this to be a problem outside of molecule.  But, if it is, we can always add a task to configure
+    # /etc/hosts via 'lineinfile', e.g.: http://discreet-its.co.uk/2018/07/19/creating-etc-hosts-using-ansible/
+    etc_hosts: "{'github-production-release-asset-2e65be.s3.amazonaws.com': '52.217.8.132'}"
 provisioner:
   name: ansible
 verifier:

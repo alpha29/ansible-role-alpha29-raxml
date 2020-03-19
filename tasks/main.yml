@@ -1,2 +1,39 @@
 ---
-# tasks file for ansible-role-alpha29-raxml
+- name: update everything (yum)
+  when:
+    - ansible_os_family == 'RedHat'
+  yum:
+    update_cache: yes
+    name: '*'
+    state: latest
+
+- name: update everything (apt)
+  when:
+    - ansible_os_family == 'Debian'
+  apt:
+    update_cache: yes
+    name: '*'
+    state: latest
+
+- name: install pkg-config (apt)
+  when:
+    - ansible_os_family == 'Debian'
+  apt:
+    name: pkg-config
+
+- name: install build tools
+  include_role:
+    name: robertdebock.buildtools
+
+- name: unarchive file
+  unarchive:
+    src: "https://api.github.com/repos/stamatak/standard-RAxML/tarball/v{{ raxml_version }}"
+    dest: /tmp
+    remote_src: yes
+
+- name: run make
+  # bypass idempotence check
+  changed_when: false
+  make:
+    chdir: "/tmp/RAxML"
+    file: Makefile.AVX.PTHREADS.gcc

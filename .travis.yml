@@ -15,10 +15,10 @@ env:
 install:
   - pip install -r requirements.txt
 
-before_script:
-  - cd ../
-  - mv ansible-role-$ORG_NAME-$ROLE_NAME $ORG_NAME.$ROLE_NAME
-  - cd $ORG_NAME.$ROLE_NAME
+#before_script:
+#  - cd ../
+#  - mv ansible-role-$ORG_NAME-$ROLE_NAME $ORG_NAME.$ROLE_NAME
+#  - cd $ORG_NAME.$ROLE_NAME
 
 script:
   - molecule test
