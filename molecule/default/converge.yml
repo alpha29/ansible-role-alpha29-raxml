@@ -1,0 +1,7 @@
+---
+- name: Converge
+  hosts: all
+  tasks:
+    - name: "Include ansible-role-alpha29-raxml"
+      include_role:
+        name: "ansible-role-alpha29-raxml"
