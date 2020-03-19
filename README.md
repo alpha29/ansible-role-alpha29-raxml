@@ -1,7 +1,7 @@
 ansible-role-alpha29-raxml
 =========
 
-Installs [raxml](https://cme.h-its.org/exelixis/web/software/raxml/), 
+Installs [raxml](https://cme.h-its.org/exelixis/web/software/raxml/), a tool for phylogenetic analysis.
 
 Requirements
 ------------
