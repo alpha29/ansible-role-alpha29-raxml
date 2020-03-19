@@ -28,12 +28,18 @@
 - name: unarchive file
   unarchive:
     src: "https://api.github.com/repos/stamatak/standard-RAxML/tarball/v{{ raxml_version }}"
-    dest: /tmp
+    dest: /opt
     remote_src: yes
 
 - name: run make
   # bypass idempotence check
   changed_when: false
   make:
-    chdir: "/tmp/RAxML"
+    chdir: "/opt/stamatak-standard-RAxML-53564cc"
     file: Makefile.AVX.PTHREADS.gcc
+
+- name: create links
+  file:
+    src: "/opt/stamatak-standard-RAxML-53564cc/raxmlHPC-PTHREADS-AVX"
+    dest: "/usr/bin/raxml"
+    state: link
